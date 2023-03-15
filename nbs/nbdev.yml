@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "ssfMiscUtilities"
+  site-url: "https://SantiagoSanchezF.github.io/ssfMiscUtilities"
+  description: "ssf miscellaneous utils"
+  repo-branch: main
+  repo-url: "https://github.com/SantiagoSanchezF/ssfMiscUtilities"
