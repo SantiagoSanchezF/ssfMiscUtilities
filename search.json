@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "lsf_interactive.html",
+    "href": "lsf_interactive.html",
+    "title": "LSF interactive",
+    "section": "",
+    "text": "from ssfMiscUtilities.generic import *"
+  },
+  {
+    "objectID": "lsf_interactive.html#generic",
+    "href": "lsf_interactive.html#generic",
+    "title": "LSF interactive",
+    "section": "Generic",
+    "text": "Generic"
+  },
+  {
+    "objectID": "lsf_interactive.html#individual-job-handling",
+    "href": "lsf_interactive.html#individual-job-handling",
+    "title": "LSF interactive",
+    "section": "Individual job handling",
+    "text": "Individual job handling\n\nsource\n\nlsf_job\n\n lsf_job (bsub_args, job_name, output_file, args, job_id=None,\n          status='unsend', iteration=1, iteration_lim=3, exit_code=None,\n          read_func=None)\n\nInitialize self. See help(type(self)) for accurate signature.\n\nsource\n\n\nsubmit\n\n submit (tup)\n\n\nsource\n\n\nupdate_status\n\n update_status (tup)\n\n\nsource\n\n\nget_result\n\n get_result (tup)\n\n\nsource\n\n\nLSF\n\n LSF (script, jobs, interpreter='python3',\n      monitor_file='/homes/fragoso/generic_monitor_file.txt',\n      output_dir='/hps/nobackup/rdf/metagenomics/research-\n      team/santiago/.std.generic', mem=1000, n_cpus=1, queue='research',\n      n_jobs=1)\n\nsend a series of lsf jobs, collect the objects, and clean. Output objects must be a pickle"
+  },
+  {
+    "objectID": "lsf_interactive.html#test",
+    "href": "lsf_interactive.html#test",
+    "title": "LSF interactive",
+    "section": "TEST",
+    "text": "TEST\n\nimport pickle\nimport sys\nimport time\n\n# time.sleep(50)\noutf, v = sys.argv[1:]\n\na = {\"hello\": v}\n\nwith open(outf, \"wb\") as handle:\n    pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)\n\nOverwriting /homes/fragoso/Downloads/test.py\n\n\n\niitt=101110033822\n\n\n\" this is the jobs array :: format.. job_name, output_file, args \"\noutputd = f'/homes/fragoso/Downloads/this{iitt}'\n# iitt+=1\njobs_arr = [\n    (\n        str(x),\n        f'{outputd}/{x}.pickle',\n        [f'{outputd}/{x}.pickle', x],\n    )\n    for x in range(10)\n]\n\njobs = LSF(\"/homes/fragoso/Downloads/test.py\",jobs_arr,n_jobs=4,output_dir=outputd)\n\n[Errno 17] File exists: '/homes/fragoso/Downloads/this101110033822'\nForce gather mode\n\n\n\ndef foo(file):\n    return \"dsdsd\"\njobs.update(read_func=foo,loop=True,verbose=2)\n\nprocessing 10 jobs\nstep 0 done\n{'done': 10}\niter: 0 {'done': 10}            \n\n\n{'done': 10}"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ssfMiscUtilities",
+    "section": "",
+    "text": "Tool"
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "ssfMiscUtilities",
+    "section": "Install",
+    "text": "Install\npip install ssfMiscUtilities"
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "ssfMiscUtilities",
+    "section": "How to use",
+    "text": "How to use\nfind specific usage in notebooks of github repo"
+  },
+  {
+    "objectID": "generic.html",
+    "href": "generic.html",
+    "title": "Generic",
+    "section": "",
+    "text": "source\n\n\n\n load_pickle (pickle_file)\n\nread a pickle file\n\nsource\n\n\n\n\n dump_pickle (obj, pickle_file, protocol=3)\n\ndump an object to pickle file"
+  },
+  {
+    "objectID": "generic.html#pickle-tools",
+    "href": "generic.html#pickle-tools",
+    "title": "Generic",
+    "section": "",
+    "text": "source\n\n\n\n load_pickle (pickle_file)\n\nread a pickle file\n\nsource\n\n\n\n\n dump_pickle (obj, pickle_file, protocol=3)\n\ndump an object to pickle file"
+  },
+  {
+    "objectID": "generic.html#sed-script",
+    "href": "generic.html#sed-script",
+    "title": "Generic",
+    "section": "SED SCRIPT",
+    "text": "SED SCRIPT\n\nsource\n\nsed_script\n\n sed_script (script, replace_array)\n\nFind and replace variable names in script This is useful to use with the lsd_interactive library to replace names in scripts\n\n\nhow it works\n\nscript = \"/homes/fragoso/Downloads/test.py\"\n\n\nfrom inspect import getsource\n\n\nimport os\nimport sys\n\n_sed_script\n\nVAR_1 = ##VAR1\nVAR_2 = ##VAR2\nVAR_3 = ##VAR3\n\nOverwriting /homes/fragoso/Downloads/test.py\n\n\n\nreplace_array = [(\"_sed_script\",getsource(sed_script)),(\"##VAR1\",1),(\"##VAR2\",'example.file'),(\"##VAR3\",'\"example.file\"')]\nsed_script(script,replace_array)\n!cat {script}\n\nimport os\nimport sys\n\ndef sed_script(script,replace_array):\n    \"\"\"\n    Find and replace variable names in script\n    This is useful to use with the lsd_interactive library to replace names in scripts\n    \"\"\"\n    with open(script, \"r\") as h:\n        lines = h.readlines()\n    with open(script, \"w\") as h:\n        for line in lines:\n            for var,hard in replace_array:\n                line = re.sub(\n                    var, \n                    str(hard),\n                    # str(hard) if type(hard)!=str else f\"'{hard}'\",\n                    line)\n            h.write(line)\n\n\nVAR_1 = 1\nVAR_2 = example.file\nVAR_3 = \"example.file\""
+  },
+  {
+    "objectID": "generic.html#map-wrappers",
+    "href": "generic.html#map-wrappers",
+    "title": "Generic",
+    "section": "Map wrappers",
+    "text": "Map wrappers\n\nsource\n\nsplit_list\n\n split_list (lst:list, n:int)\n\nsplit a list into N chunks\n\nsource\n\n\nlmap\n\n lmap (func, li:list)\n\nmap a list with funtion\n\nsource\n\n\nmmap\n\n mmap (func, li:list, cpus:int)\n\nwrapper of multiprocessing.Pool.map"
+  },
+  {
+    "objectID": "generic.html#visual",
+    "href": "generic.html#visual",
+    "title": "Generic",
+    "section": "Visual",
+    "text": "Visual\n\nsource\n\nfprint\n\n fprint (string:str)\n\nwrapper to print with flush"
+  }
+]
