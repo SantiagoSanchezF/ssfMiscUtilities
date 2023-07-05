@@ -43,12 +43,11 @@ def sed_script(script,replace_array):
             h.write(line)
 
 # %% ../nbs/generic.ipynb 15
-def split_list(li:list,chunks:int):
+def split_list(lst:list,n:int):
     "split a list into N chunks"
-    le = int(len(li)/(chunks-1))
-    res = [li[(i*le):(i+1)*le] for i in range(chunks)]
-    if res[-1] == []: res.pop()
-    return res
+    k, m = divmod(len(lst), n)
+    return list(lst[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
+
 
 # %% ../nbs/generic.ipynb 16
 def lmap(func,li:list):
